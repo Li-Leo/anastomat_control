@@ -1,0 +1,16 @@
+
+
+# ignore files
+
+*.o
+*.d
+*.crf
+*.axf
+*.dep
+*.iex
+*.lnp
+*.map
+*.htm
+*.sct
+*.uvguix.*
+
