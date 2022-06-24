@@ -6,6 +6,9 @@
 static bool g_m1_motor_is_running;
 static bool g_m2_motor_is_running;
 
+static uint16_t g_buzzer_counter;
+static uint16_t g_buzzer_repeat;
+
 void m1_motor_run(enum direction dir)
 {
     if (!m1_motor_is_running()) {
@@ -83,9 +86,6 @@ void buzzer_off(void)
 }
 
 
-uint16_t g_buzzer_counter;
-uint16_t g_buzzer_repeat;
-
 void buzzer_internal(void)
 {
     g_buzzer_counter++;
@@ -102,7 +102,7 @@ void buzzer(uint16_t repeat)
 {
     g_buzzer_counter = 0;
     g_buzzer_repeat = repeat;
-    
+
     timer_set_handler(kTimerDelayBuzzer, buzzer_internal);
     timer_start_periodic_every(kTimerDelayBuzzer, 500);
     buzzer_internal();
