@@ -24,11 +24,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "timer.h"
 #include "event.h"
+#include "key_handle.h"
+#include "timer.h"
 #include "msg.h"
 #include "key.h"
-#include "hall.h"
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,43 +87,7 @@ bool main_handle_all(void)
 	return ret;
 }
 
-void on_press_R_switch_key(KeyID key, int repeat_count)
-{
-  HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, GPIO_PIN_SET);
-  HAL_TIM_Base_Start_IT(&htim1);
-}
-
-void on_press_L_switch_key(KeyID key, int repeat_count)
-{
-  HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, GPIO_PIN_RESET);
-  stop_motor();
-  HAL_TIM_Base_Stop_IT(&htim1);
-}
-
-void on_press_J_switch_key(KeyID key, int repeat_count)
-{
-  stop_motor();
-  HAL_TIM_Base_Stop_IT(&htim1);
-  HAL_Delay(200);
-
-  motor_switch_direction();
-  HAL_TIM_Base_Start_IT(&htim1);
-}
-
-void on_press_return_switch_key(KeyID key, int repeat_count)
-{
-  HAL_TIM_PWM_Start(&htim14, TIM_CHANNEL_1);
-}
-
-void on_release_return_switch_key(KeyID key, int repeat_count)
-{
-  HAL_TIM_PWM_Stop(&htim14, TIM_CHANNEL_1);
-}
-
-void on_press_stop_switch_key(KeyID key, int repeat_count)
-{
-  HAL_GPIO_TogglePin(SMotor_DIR_GPIO_Port, SMotor_DIR_Pin);
-}
+// HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, GPIO_PIN_SET);
 
 /* USER CODE END 0 */
 
@@ -165,16 +130,35 @@ int main(void)
   msg_init();
   key_init();
   main_init_event_handler();
-
-  key_set_handler(kKeyRSwitch, kKeyEventPressed, on_press_R_switch_key);
-	key_set_handler(kKeyLSwitch, kKeyEventPressed, on_press_L_switch_key);
-  key_set_handler(kKeyJSwitch, kKeyEventPressed, on_press_J_switch_key);
-  
-  key_set_handler(kKeyReturnSwitch, kKeyEventPressed, on_press_return_switch_key);
-  key_set_handler(kKeyReturnSwitch, kKeyEventReleased, on_release_return_switch_key);
-  key_set_handler(kKeyStopSwitch, kKeyEventPressed, on_press_stop_switch_key);
-
+  set_key_handler();
   key_start_scan();
+  buzzer(2);
+
+  // uint16_t data[256];
+
+  // for (uint16_t i = 0; i < 256; i++) {
+  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
+  // }
+
+  // HAL_FLASH_Unlock();
+  // HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x8000000 + 0xfe00, 0x1234);
+  // HAL_FLASH_Lock();
+
+  // for (uint16_t i = 0; i < 256; i++) {
+  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
+  // }
+
+
+  // FLASH_EraseInitTypeDef erase_config = {.TypeErase = FLASH_TYPEERASE_PAGES, .PageAddress = 0x8000000 + 0xfe00, .NbPages = 1};
+  // uint32_t page_error;
+  // HAL_FLASH_Unlock();
+  // HAL_FLASHEx_Erase(&erase_config, &page_error);
+  // HAL_FLASH_Lock();
+
+
+  // for (uint16_t i = 0; i < 256; i++) {
+  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
+  // }
 
   // HAL_TIM_Base_Start_IT(&htim1);
 

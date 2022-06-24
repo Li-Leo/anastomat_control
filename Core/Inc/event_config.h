@@ -7,12 +7,13 @@ extern "C" {
 #endif
 
 
-typedef enum {
+typedef enum
+{
 	kEventNewTick,
 	kEventReceiveNewMsg,
 
 	kEventIDMax
-}EventID;
+} EventID;
 
 #ifdef __cplusplus
 }

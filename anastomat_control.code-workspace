@@ -9,7 +9,10 @@
 			"msg.h": "c",
 			"key.h": "c",
 			"main.h": "c",
-			"hall.h": "c"
+			"hall.h": "c",
+			"timer.h": "c",
+			"event.h": "c",
+			"motor.h": "c"
 		}
 	}
 }

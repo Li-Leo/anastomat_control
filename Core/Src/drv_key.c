@@ -8,39 +8,34 @@
 /************************************************
 * Variable 
 ************************************************/
-struct key_s
+struct key_config
 {
     GPIO_TypeDef* gpio_port;
     uint16_t gpio_pin;
-    bool state;
+    bool pressed_state;
 };
 
 
-const static struct key_s g_key_gpios[kKeyIDMax] =
+const static struct key_config g_key_gpios[kKeyIDMax] =
 {
     {J_SWITCH_GPIO_Port, J_SWITCH_Pin, false},
-
     {RETURN_SWITCH_GPIO_Port, RETURN_SWITCH_Pin, false},
     {STOP_SWITCH_GPIO_Port, STOP_SWITCH_Pin, false},
-
-    {L_Switch_GPIO_Port, L_Switch_Pin, false},	
+    {L_Switch_GPIO_Port, L_Switch_Pin, false},
     {R_Switch_GPIO_Port,R_Switch_Pin, false},
-
     {M1M2_SWITCH_GPIO_Port,M1M2_SWITCH_Pin, false},
-
     {L_Limit_GPIO_Port, L_Limit_Pin, false},
     {R_Limit_GPIO_Port, R_Limit_Pin, false},
-
 };
 
 /************************************************
 * Function 
 ************************************************/
-bool gpio_is_valid(const struct key_s * key)
+bool gpio_is_valid(const struct key_config * key)
 {
     bool ret;
    
-    ret = (HAL_GPIO_ReadPin(key->gpio_port, key->gpio_pin) == key->state) ? true : false;
+    ret = (HAL_GPIO_ReadPin(key->gpio_port, key->gpio_pin) == key->pressed_state) ? true : false;
     
     return ret;
 }

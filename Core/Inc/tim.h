@@ -61,7 +61,7 @@ void mos_V_WN(void);
 void mos_V_UN(void);
 void mos_W_UN(void);
 void mos_W_VN(void);
-void stop_motor(void);
+void m1_motor_stop_output(void);
 
 /* USER CODE END Prototypes */
 

@@ -19,7 +19,11 @@ typedef enum {
 	//screen timer
 	kTimerScreen, //used for screen,can be used at each screen
 	kTimerScanKey,
+	kTimerDelay15s,
 	
+	kTimerDelayBuzzer,
+	kTimerDelayBuzzerInternal,
+
 	// kTimerRepeatCmd,
 
 	kTimerIDMax
