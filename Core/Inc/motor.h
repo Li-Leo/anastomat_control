@@ -15,3 +15,4 @@ void m2_motor_run(enum direction dir);
 void m2_motor_stop(void);
 bool m2_motor_is_running(void);
 void buzzer(uint16_t repeat);
+void m2_motor_init(void);

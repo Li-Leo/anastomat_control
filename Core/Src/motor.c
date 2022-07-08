@@ -63,6 +63,7 @@ void m2_motor_run(enum direction dir)
         HAL_Delay(50);
         HAL_TIM_MspPostInit(&htim14);
         HAL_TIM_PWM_Start(&htim14, TIM_CHANNEL_1);
+        // HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_SET);
         g_m2_motor_is_running = true;
     }
 }
@@ -80,6 +81,22 @@ void m2_motor_stop()
         HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_RESET);
         g_m2_motor_is_running = false;
     }
+}
+
+void m2_motor_init(void)
+{
+
+    // HAL_TIM_PWM_Stop(&htim14, TIM_CHANNEL_1);
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = SMotor_PWM_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+
+    HAL_GPIO_Init(SMotor_PWM_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_RESET);
+    g_m2_motor_is_running = false;
+
 }
 
 bool m2_motor_is_running()

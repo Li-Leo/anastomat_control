@@ -150,6 +150,7 @@ int main(void)
   flash_init();
   buzzer(2);
   msg_set_handler(kMsgReachLifetimeLimit, reach_lifetime_limit);
+  m2_motor_init();
 
   // HAL_TIM_Base_Start_IT(&htim1);
 
