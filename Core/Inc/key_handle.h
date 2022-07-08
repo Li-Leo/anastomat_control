@@ -1,6 +1,9 @@
 #pragma once
 #include "main.h"
 
+#define M1_M2_DELAY 15 * 1000
+#define MIDDLE_DELAY 2 * 1000
+
 bool m1m2_switch_is_closed(void);
 void m1_motor_run_disable(void);
 void m1_motor_run_enable(void);

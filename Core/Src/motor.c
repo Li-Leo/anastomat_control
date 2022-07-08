@@ -2,8 +2,14 @@
 #include "main.h"
 #include "tim.h"
 #include "timer.h"
+#include "flash.h"
 
 static bool g_m1_motor_is_running;
+static enum direction g_m1_motor_running_direction;
+
+bool g_m1_motor_is_lifetime_enable = true;
+bool g_m2_motor_is_lifetime_enable = true;
+
 static bool g_m2_motor_is_running;
 
 static uint16_t g_buzzer_counter;
@@ -11,13 +17,14 @@ static uint16_t g_buzzer_repeat;
 
 void m1_motor_run(enum direction dir)
 {
-    if (!m1_motor_is_running()) {
+    if (!m1_motor_is_running() && g_m1_motor_is_lifetime_enable) {
         m1_motor_stop_output();
         HAL_TIM_Base_Stop_IT(&htim1);
         HAL_Delay(100);
         m1_motor_set_direction(dir);
         HAL_TIM_Base_Start_IT(&htim1);
         g_m1_motor_is_running = true;
+        g_m1_motor_running_direction = dir;
     }
 }
 
@@ -27,6 +34,11 @@ void m1_motor_stop()
         m1_motor_stop_output();
         g_m1_motor_is_running = false;
     }
+}
+
+enum direction m1_motor_running_dir()
+{
+    return g_m1_motor_running_direction;
 }
 
 bool m1_motor_is_running()
@@ -45,7 +57,7 @@ void m2_motor_set_direction(enum direction dir)
 
 void m2_motor_run(enum direction dir)
 {
-    if (!m2_motor_is_running()) {
+    if (!m2_motor_is_running() && g_m2_motor_is_lifetime_enable) {
         HAL_TIM_PWM_Stop(&htim14, TIM_CHANNEL_1);
         m2_motor_set_direction(dir);
         HAL_Delay(50);

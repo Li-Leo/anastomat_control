@@ -20,6 +20,8 @@ typedef enum {
 	kTimerScreen, //used for screen,can be used at each screen
 	kTimerScanKey,
 	kTimerDelay15s,
+	kTimerDelay2s,
+	kTimerLedCheck,
 	
 	kTimerDelayBuzzer,
 	kTimerDelayBuzzerInternal,

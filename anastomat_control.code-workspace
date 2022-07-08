@@ -12,7 +12,8 @@
 			"hall.h": "c",
 			"timer.h": "c",
 			"event.h": "c",
-			"motor.h": "c"
+			"motor.h": "c",
+			"flash.h": "c"
 		}
 	}
 }

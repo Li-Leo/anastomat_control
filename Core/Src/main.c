@@ -30,6 +30,7 @@
 #include "msg.h"
 #include "key.h"
 #include "motor.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,6 +70,20 @@ static void main_init_event_handler(void)
   // event_set_handler(kEventMCUUartReceiveNewData, main_handle_mcu_uart_recv);
 }
 
+void reach_lifetime_limit(MsgParam param)
+{
+#ifdef __DEBUG
+
+
+#else
+
+  m1_motor_stop();
+  m2_motor_stop();
+  g_m1_motor_is_lifetime_enable = false;
+  g_m2_motor_is_lifetime_enable = false;
+
+#endif
+}
 
 bool main_handle_all(void)
 {
@@ -132,33 +147,9 @@ int main(void)
   main_init_event_handler();
   set_key_handler();
   key_start_scan();
+  flash_init();
   buzzer(2);
-
-  // uint16_t data[256];
-
-  // for (uint16_t i = 0; i < 256; i++) {
-  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
-  // }
-
-  // HAL_FLASH_Unlock();
-  // HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x8000000 + 0xfe00, 0x1234);
-  // HAL_FLASH_Lock();
-
-  // for (uint16_t i = 0; i < 256; i++) {
-  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
-  // }
-
-
-  // FLASH_EraseInitTypeDef erase_config = {.TypeErase = FLASH_TYPEERASE_PAGES, .PageAddress = 0x8000000 + 0xfe00, .NbPages = 1};
-  // uint32_t page_error;
-  // HAL_FLASH_Unlock();
-  // HAL_FLASHEx_Erase(&erase_config, &page_error);
-  // HAL_FLASH_Lock();
-
-
-  // for (uint16_t i = 0; i < 256; i++) {
-  //    data[i] = *(uint16_t *) (0x8000000 + 0xfe00 + 2 * i);
-  // }
+  msg_set_handler(kMsgReachLifetimeLimit, reach_lifetime_limit);
 
   // HAL_TIM_Base_Start_IT(&htim1);
 

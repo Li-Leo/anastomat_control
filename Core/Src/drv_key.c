@@ -24,8 +24,9 @@ const static struct key_config g_key_gpios[kKeyIDMax] =
     {L_Switch_GPIO_Port, L_Switch_Pin, false},
     {R_Switch_GPIO_Port,R_Switch_Pin, false},
     {M1M2_SWITCH_GPIO_Port,M1M2_SWITCH_Pin, false},
-    {L_Limit_GPIO_Port, L_Limit_Pin, false},
     {R_Limit_GPIO_Port, R_Limit_Pin, false},
+    {L_Limit_GPIO_Port, L_Limit_Pin, false},
+    {LR_Delay_2s_GPIO_Port, LR_Delay_2s_Pin, false},
 };
 
 /************************************************

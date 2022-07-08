@@ -7,8 +7,9 @@
 
 typedef enum {
 	kMsgNull,
-	kMsgAlarmSet,
-	kMsgAlarmClear,
+	// kMsgAlarmSet,
+	// kMsgAlarmClear,
+	kMsgReachLifetimeLimit,
 
     kMsgIDMax
 }MsgID;

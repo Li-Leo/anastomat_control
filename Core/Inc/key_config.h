@@ -21,6 +21,8 @@ typedef enum {
 	kLLimit,
 	kRLimit,
 
+	kDelay2s,
+
 	kKeyIDMax
 }KeyID;
 
