@@ -6,6 +6,7 @@
 
 static bool g_m1_motor_is_running;
 static enum direction g_m1_motor_running_direction;
+static enum direction g_m2_motor_running_direction;
 
 bool g_m1_motor_is_lifetime_enable = true;
 bool g_m2_motor_is_lifetime_enable = true;
@@ -65,8 +66,15 @@ void m2_motor_run(enum direction dir)
         HAL_TIM_PWM_Start(&htim14, TIM_CHANNEL_1);
         // HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_SET);
         g_m2_motor_is_running = true;
+        g_m2_motor_running_direction = dir;
     }
 }
+
+enum direction m2_motor_running_dir()
+{
+    return g_m2_motor_running_direction;
+}
+
 
 void m2_motor_stop()
 {

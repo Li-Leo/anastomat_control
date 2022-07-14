@@ -143,14 +143,17 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   msg_init();
-  key_init();
   main_init_event_handler();
-  set_key_handler();
-  key_start_scan();
   flash_init();
   buzzer(2);
-  msg_set_handler(kMsgReachLifetimeLimit, reach_lifetime_limit);
+  // msg_set_handler(kMsgReachLifetimeLimit, reach_lifetime_limit);
+  key_init();
+  set_key_handler();
+  // key_start_scan();
+  
+  timer_set_handler(kTimerDelay, key_start_scan);
   m2_motor_init();
+  timer_start_oneshot_after(kTimerDelay, 200);
 
   // HAL_TIM_Base_Start_IT(&htim1);
 
