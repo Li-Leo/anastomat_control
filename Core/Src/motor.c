@@ -56,9 +56,23 @@ void m2_motor_set_direction(enum direction dir)
         HAL_GPIO_WritePin(SMotor_DIR_GPIO_Port, SMotor_DIR_Pin, GPIO_PIN_RESET);
 }
 
+
+void m2_motor_run_oposite_direction(void)
+{
+    if (m2_motor_is_running()) {
+        if (m2_motor_running_dir() == kForward) {
+            m2_motor_run(kBackward);
+        }
+        else if (m2_motor_running_dir() == kBackward) {
+            m2_motor_run(kForward);
+        }
+    }
+}
+
+
 void m2_motor_run(enum direction dir)
 {
-    if (!m2_motor_is_running() && g_m2_motor_is_lifetime_enable) {
+    if (g_m2_motor_is_lifetime_enable) {
         HAL_TIM_PWM_Stop(&htim14, TIM_CHANNEL_1);
         m2_motor_set_direction(dir);
         HAL_Delay(50);
@@ -67,6 +81,9 @@ void m2_motor_run(enum direction dir)
         // HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_SET);
         g_m2_motor_is_running = true;
         g_m2_motor_running_direction = dir;
+        
+        timer_set_handler(kTimerMotor2Expired, m2_motor_run_oposite_direction);
+        timer_start_oneshot_after(kTimerMotor2Expired, 8000);
     }
 }
 
@@ -88,6 +105,7 @@ void m2_motor_stop()
         HAL_GPIO_Init(SMotor_PWM_GPIO_Port, &GPIO_InitStruct);
         HAL_GPIO_WritePin(SMotor_PWM_GPIO_Port, SMotor_PWM_Pin, GPIO_PIN_RESET);
         g_m2_motor_is_running = false;
+        timer_stop(kTimerMotor2Expired);
     }
 }
 

@@ -23,6 +23,8 @@ typedef enum {
 	kTimerDelay2s,
 	kTimerLedCheck,
 	kTimerDelay,
+	kTimerMotor2Expired,
+	kTimerMotor1Expired,
 	
 	kTimerDelayBuzzer,
 	kTimerDelayBuzzerInternal,
