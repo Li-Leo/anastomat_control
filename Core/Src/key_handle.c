@@ -6,22 +6,9 @@
 #include "flash.h"
 #include "msg.h"
 
-bool g_m1m2_switch_is_pressed = false;
-bool g_m1_motor_run_is_enable = false;
-bool g_m1_motor_run_backward_is_enable = false;
-
-bool g_m2_motor_limit_left_is_enable = false;
-bool g_m2_motor_limit_right_is_enable = false;
-
-bool g_r_switch_is_pressed = false;
-bool g_l_switch_is_pressed = false;
-
-bool g_m2_motor_run_is_enable = true;
 
 uint32_t g_times;
 
-
-bool g_is_allow_m1_run = false;
 
 void start_motor2(void)
 {
@@ -38,17 +25,11 @@ void on_pressed_delay2s_switch_key(KeyID key, int repeat_count)
     HAL_Delay(500);
     m2_motor_stop();
 
-    g_times++;
 
-    if (g_times % 2 == 0) {
-        HAL_Delay(500);
+    HAL_Delay(500);
 
-        timer_set_handler(kTimerDelay, start_motor1);
-        timer_start_oneshot_after(kTimerDelay, 5000);
-        
-    } else {
-        m2_motor_run(m2_motor_running_dir());
-    }
+    timer_set_handler(kTimerDelay, start_motor1);
+    timer_start_oneshot_after(kTimerDelay, 5000);
 
     // timer_start_oneshot_after(kTimerMotor2Expired, 6000);
 }
@@ -98,7 +79,8 @@ void on_pressed_hold_right_limit_key(KeyID key, int repeat_count)
 {
     m2_motor_stop();
     m2_motor_run(kBackward);
-    g_is_allow_m1_run = true;
+    timer_start_oneshot_after(kTimerMotor1Run, 5000);
+
     // m1_motor_run(kForward);
 }
 
@@ -118,7 +100,7 @@ void on_pressed_R_switch_key(KeyID key, int repeat_count)
     key_set_handler(kKeyStopSwitch, kKeyEventPressed, on_pressed_stop_switch_key);
     key_set_handler(kRLimit, kKeyEventPressed, on_pressed_hold_right_limit_key);
     key_set_handler(kLLimit, kKeyEventPressed, on_pressed_hold_left_limit_key);
-    key_set_handler(kDelay2s, kKeyEventPressed, on_pressed_delay2s_switch_key);
+    // key_set_handler(kDelay2s, kKeyEventPressed, on_pressed_delay2s_switch_key);
 
     
     if (!m2_motor_is_running())
@@ -146,6 +128,9 @@ void set_key_handler(void)
 
     key_set_handler(kKeyRSwitch, kKeyEventPressed, on_pressed_R_switch_key);
     key_set_handler(kKeyLSwitch, kKeyEventPressed, on_pressed_L_switch_key);
+    
+    timer_set_handler(kTimerMotor1Run, on_pressed_delay2s_switch_key);
+    // timer_start_oneshot_after(kTimerMotor1Run, 3000);
     // key_set_handler(kKeyRSwitch, kKeyEventReleased, on_released_R_switch_key);
     // key_set_handler(kKeyLSwitch, kKeyEventReleased, on_released_L_switch_key);
 
